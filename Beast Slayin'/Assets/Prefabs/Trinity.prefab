@@ -181,6 +181,8 @@ GameObject:
   - component: {fileID: 5321063394337439632}
   - component: {fileID: 5321063394337439633}
   - component: {fileID: 5321063394337439637}
+  - component: {fileID: 7045615860641781434}
+  - component: {fileID: 9119437602794442761}
   - component: {fileID: 8248536197018515373}
   - component: {fileID: 5432983168528562582}
   - component: {fileID: 587277243323712217}
@@ -311,10 +313,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c66e6476376b794db450cd6f9e8efb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAudioSource: {fileID: 0}
   runSpeed: 10
   jumpImpulse: 18
+--- !u!114 &7045615860641781434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321063394337439634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff8fe836e87ddbf4195b7a9576b06603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDashing: 0
+  dashDistance: 3
+  dashDuration: 0.25
+  dashSpeed: 35
+  dashCooldown: 1
   currentAudioSource: {fileID: 0}
-  swordSwing: {fileID: 0}
+  dash: {fileID: 0}
+--- !u!114 &9119437602794442761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321063394337439634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d512389ca3cf574a9e3a6bcf824e86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageableHit:
+    m_PersistentCalls:
+      m_Calls: []
+  maxHealth: 200
+  health: 200
+  isAlive: 1
+  audioSource: {fileID: 0}
+  deathAudioSource: {fileID: 0}
+  dmgClip: {fileID: 0}
+  deathClip: {fileID: 0}
+  isInvincible: 0
+  iFrames: 1.25
 --- !u!114 &8248536197018515373
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class TouchingDirections : MonoBehaviour
     public float wallDistance = 0.2f;
 
     CapsuleCollider2D touchingCol;
+    Animator animator;
 
     RaycastHit2D[] groundHits = new RaycastHit2D[5];
     RaycastHit2D[] wallHits = new RaycastHit2D[5];
@@ -25,6 +26,7 @@ public class TouchingDirections : MonoBehaviour
         private set
         {
             isGrounded = value;
+            animator.SetBool(AnimationStrings.isGrounded, value);
         }
     }
 
@@ -41,12 +43,14 @@ public class TouchingDirections : MonoBehaviour
         private set
         {
             isOnWall = value;
+            animator.SetBool(AnimationStrings.isOnWall, value);
         }
     }
 
     private void Awake()
     {
         touchingCol = GetComponent<CapsuleCollider2D>();
+        animator = GetComponent<Animator>();
     }
 
     void FixedUpdate()
