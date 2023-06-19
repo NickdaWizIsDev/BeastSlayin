@@ -5,8 +5,6 @@ using UnityEngine.Events;
 
 public class Damageable : MonoBehaviour
 {
-    public UnityEvent<int, Vector2> damageableHit;
-
     [SerializeField]
     private int maxHealth = 100;
     public int MaxHealth
@@ -117,7 +115,7 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    public bool Hit(int damage, Vector2 knockback)
+    public bool Hit(int damage)
     {
         if (IsAlive && !isInvincible)
         {
@@ -125,7 +123,6 @@ public class Damageable : MonoBehaviour
             isInvincible = true;
 
             IsHit = true;
-            damageableHit?.Invoke(damage, knockback);
 
             return true;
         }

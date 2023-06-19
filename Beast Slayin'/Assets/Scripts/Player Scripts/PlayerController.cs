@@ -172,4 +172,9 @@ public class PlayerController : MonoBehaviour
             rb2d.gravityScale = fallGravityScale;
         }
     }
+
+    public void OnHit(int damage, Vector2 knockback)
+    {
+        rb2d.velocity = new Vector2(knockback.x, rb2d.velocity.y + knockback.y);
+    }
 }

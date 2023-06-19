@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - Platforms
+  - Bullet
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - UI
   - Ground
   - Deco
-  - 
-  - 
-  - 
+  - Enemy
+  - PlayerHits
+  - EnemyHits
   - 
   - 
   - 
@@ -40,15 +42,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 126326891
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Deco
     uniqueID: 1119855487
     locked: 0
-  - name: Player
-    uniqueID: 2530584005
-    locked: 0
   - name: Tilemap
     uniqueID: 940221577
+    locked: 0
+  - name: Player
+    uniqueID: 2530584005
     locked: 0
