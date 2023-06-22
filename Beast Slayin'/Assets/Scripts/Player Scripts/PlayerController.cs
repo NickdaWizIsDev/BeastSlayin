@@ -13,7 +13,10 @@ public class PlayerController : MonoBehaviour
     private Damageable damageable;
     private Dash dash;
 
-    public AudioSource currentAudioSource;
+    public AudioSource audioSource;
+    public AudioClip walk1;
+    public AudioClip walk2;
+    public AudioClip land;
 
     Vector2 moveInput;
     public float runSpeed = 7.5f;
@@ -70,6 +73,7 @@ public class PlayerController : MonoBehaviour
     private readonly float fallGravityScale = 7f;
 
     private bool isFacingRight = true;
+    [SerializeField]
     public bool IsFacingRight
     {
         get
@@ -94,9 +98,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         damageable = GetComponent<Damageable>();
         dash = GetComponent<Dash>();
-
-        if (currentAudioSource == null)
-            currentAudioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -107,6 +109,10 @@ public class PlayerController : MonoBehaviour
         {
             rb2d.gravityScale = fallGravityScale;
         }
+        else if (dash.IsDashing)
+        {
+            rb2d.gravityScale = 0;
+        }
         else
         {
             rb2d.gravityScale = 4f;
@@ -115,12 +121,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!damageable.IsHit)
+        if(!damageable.IsHit)
             rb2d.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb2d.velocity.y);
-        if (dash.IsDashing)
-        {
-            rb2d.velocity = new Vector2(dash.dashSpeed * transform.localScale.x, rb2d.velocity.y);
-        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -173,8 +175,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnHit(int damage, Vector2 knockback)
+    public void PlayWalkOne()
     {
-        rb2d.velocity = new Vector2(knockback.x, rb2d.velocity.y + knockback.y);
+        audioSource.PlayOneShot(walk1);
+    }
+
+    public void PlayWalkTwo()
+    {
+        audioSource.PlayOneShot(walk2);
+    }
+
+    public void Land()
+    {
+        audioSource.PlayOneShot(land);
     }
 }

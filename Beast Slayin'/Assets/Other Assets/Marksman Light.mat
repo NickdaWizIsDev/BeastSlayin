@@ -43,6 +43,6 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _GlowColor: {r: 0, g: 135.58704, b: 0, a: 1}
+    - _GlowColor: {r: 0.62026155, g: 131.49513, b: 0.62026155, a: 1}
     - _TilemapColor: {r: 0.3568628, g: 0.3568628, b: 0.3568628, a: 0}
   m_BuildTextureStacks: []

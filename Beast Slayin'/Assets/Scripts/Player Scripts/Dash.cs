@@ -8,6 +8,7 @@ public class Dash : MonoBehaviour
     Animator animator;
     Rigidbody2D rb2d;
     PlayerController controller;
+    Damageable damageable;
 
     [SerializeField]
     private bool isDashing = false;
@@ -21,6 +22,7 @@ public class Dash : MonoBehaviour
         {
             isDashing = value;
             animator.SetBool(AnimationStrings.isDashing, value);
+            damageable.isInvincible = value;
         }
     }
 
@@ -30,7 +32,7 @@ public class Dash : MonoBehaviour
     public float dashCooldown = 1f;
     private float dashStartTime;
 
-    public AudioSource currentAudioSource;
+    public AudioSource audioSource;
     public AudioClip dash;
 
     private void Awake()
@@ -38,9 +40,8 @@ public class Dash : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         controller = GetComponent<PlayerController>();
-
-        if (currentAudioSource == null)
-            currentAudioSource = GetComponent<AudioSource>();
+        damageable = GetComponent<Damageable>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void OnDash(InputAction.CallbackContext context)
@@ -55,38 +56,21 @@ public class Dash : MonoBehaviour
     {
         IsDashing = true;
         dashStartTime = Time.time;
+        audioSource.PlayOneShot(dash);
 
         float normalSpeed = controller.runSpeed;
         controller.runSpeed = dashSpeed;
 
         // Determine the dash direction based on the player's facing direction
         Vector2 dashDirection = controller.IsFacingRight ? Vector2.right : Vector2.left;
-        Vector2 dashVelocity = dashDirection * (dashDistance / dashDuration);
-        float distanceTraveled = 0f;
+        Vector2 dashForce = dashDirection * (dashDistance / dashDuration);
 
-        while (distanceTraveled < dashDistance)
-        {
-            rb2d.velocity = dashVelocity;
-            distanceTraveled += Mathf.Abs(dashVelocity.x) * Time.deltaTime;
-            yield return null;
-        }
+        rb2d.AddForce(dashForce, ForceMode2D.Impulse);
+        rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
+
+        yield return new WaitForSeconds(dashDuration);
 
         controller.runSpeed = normalSpeed;
         IsDashing = false;
-    }
-    public void PlayDashSound()
-    {
-        GameObject audioObject = new("DashAudio");
-        audioObject.transform.position = transform.position;
-
-        AudioSource audioSource = audioObject.AddComponent<AudioSource>();
-
-        audioSource.clip = dash;
-
-        audioSource.Play();
-
-        Destroy(audioObject, dash.length);
-
-        currentAudioSource = audioSource;
     }
 }

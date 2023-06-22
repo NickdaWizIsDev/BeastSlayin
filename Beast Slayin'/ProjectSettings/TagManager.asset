@@ -8,6 +8,7 @@ TagManager:
   - Platforms
   - Bullet
   - Enemy
+  - Weakpoint
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Enemy
   - PlayerHits
   - EnemyHits
-  - 
+  - GroundHits
   - 
   - 
   - 

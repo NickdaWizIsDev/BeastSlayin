@@ -65,6 +65,7 @@ public class Damageable : MonoBehaviour
                     deathAudioSource.clip = deathClip;
                     deathAudioSource.Play();
                 }
+                Destroy(gameObject);
             }
         }
     }
@@ -110,6 +111,7 @@ public class Damageable : MonoBehaviour
             {
                 isInvincible = false;
                 timeSinceHit = 0;
+                IsHit = false;
             }
             timeSinceHit += Time.deltaTime;
         }

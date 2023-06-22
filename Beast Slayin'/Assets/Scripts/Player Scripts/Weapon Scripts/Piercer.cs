@@ -3,26 +3,36 @@ using UnityEngine.InputSystem;
 
 public class Piercer : MonoBehaviour
 {
+    public Transform centerPoint; // Center point around which the gun rotates
     public Transform firePoint;
     public GameObject bulletPrefab;
+    public GameObject playerGameObject;
+    public AudioClip gunshotClip;
     public float bulletForce = 20f;
     public float cooldownTime = 0.5f;
     public float rotationSpeed = 10f;
+    public float distanceFromCenter = 1f; // Set the desired distance from the center point
 
     private Camera mainCamera;
-    private Vector3 mousePosition;
+    private AudioSource audioSource;
+    private Vector2 mousePosition;
     private float shootTimer;
+    private bool canShoot = true;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void Start()
     {
         mainCamera = Camera.main;
-        shootTimer = 0.25f;
+        shootTimer = cooldownTime;
     }
 
     private void Update()
     {
-        RotateTowardsMouse();
-        shootTimer += Time.deltaTime;
+        mousePosition = Mouse.current.position.ReadValue();
     }
 
     public void OnFire(InputAction.CallbackContext context)
@@ -47,26 +57,61 @@ public class Piercer : MonoBehaviour
         shootTimer = 0f;
     }
 
+    private void FixedUpdate()
+    {
+        RotateTowardsMouse();
+        shootTimer += Time.fixedDeltaTime;
+    }
+
     private void RotateTowardsMouse()
     {
-        mousePosition = Mouse.current.position.ReadValue();
         Vector3 worldMousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        Vector3 direction = (worldMousePosition - transform.position).normalized;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        // Calculate the direction from the center point to the mouse position
+        Vector3 directionFromCenter = worldMousePosition - centerPoint.position;
+        directionFromCenter.z = 0f; // Set the z-component to 0 for 2D
+
+        // Calculate the desired position based on the distance from the center point
+        Vector3 desiredPosition = centerPoint.position + directionFromCenter.normalized * distanceFromCenter;
+
+        // Set the position of the gun relative to the desired position
+        transform.position = desiredPosition;
+
+        // Calculate the angle to rotate towards the mouse with a 90-degree offset
+        float angle = Mathf.Atan2(directionFromCenter.y, directionFromCenter.x) * Mathf.Rad2Deg;
+
+        // Set the rotation of the gun to point towards the mouse
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, angle), rotationSpeed * Time.fixedDeltaTime);
+
+        // Update the player's facing direction
+        bool isPlayerFacingRight = GetPlayerFacingDirection(directionFromCenter.x);
+
+        // Flip the scale based on the player's facing direction and the aiming direction
+        float scaleX = isPlayerFacingRight ? 1f : -1f;
+        float scaleY = Mathf.Sign(directionFromCenter.x);
+        float scaleZ = 1f;
+
+        transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
     }
+
+
+    private bool GetPlayerFacingDirection(float directionX)
+    {
+        // Assuming the player has a script called "PlayerController" with a "IsFacingRight" property
+        PlayerController playerController = playerGameObject.GetComponent<PlayerController>();
+
+        return playerController.IsFacingRight;
+    }
+
 
     private void Shoot()
     {
-        Vector3 mousePosition = Mouse.current.position.ReadValue();
-        Vector3 worldMousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        Vector3 direction = (worldMousePosition - firePoint.position).normalized;
+        Vector3 direction = (mousePosition - (Vector2)mainCamera.WorldToScreenPoint(firePoint.position)).normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
         bulletRb.AddForce(direction * bulletForce, ForceMode2D.Impulse);
+        audioSource.PlayOneShot(gunshotClip);
 
         // Destroy the bullet object after a certain time
         Destroy(bullet, 1f); // Change the time as per your requirements
