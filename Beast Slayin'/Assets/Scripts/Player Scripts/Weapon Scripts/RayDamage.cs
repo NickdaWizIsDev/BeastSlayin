@@ -18,6 +18,7 @@ public class RayDamage : MonoBehaviour
 
     private Camera mainCamera;
     private AudioSource audioSource;
+    private Animator animator;
     private bool isFiring;
     private float chargeTimer;
     private float cooldownTimer;
@@ -27,6 +28,7 @@ public class RayDamage : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -55,7 +57,6 @@ public class RayDamage : MonoBehaviour
             {
                 chargeTimer += Time.deltaTime;
                 float chargePercent = chargeTimer / chargeUpDuration;
-                // TODO: Update charge UI or perform any charge visualizations
             }
         }
         else if (Input.GetMouseButtonUp(1))
@@ -68,6 +69,7 @@ public class RayDamage : MonoBehaviour
                 Invoke(nameof(DisableFiring), rayDuration);
             }
             audioSource.clip = null;
+            animator.SetBool(AnimationStrings.isChargingPiercer, false);
             isFiring = false;
             chargeTimer = 0f;
         }
@@ -97,6 +99,7 @@ public class RayDamage : MonoBehaviour
         audioSource.loop = true;
         audioSource.clip = chargeUpClip;
         audioSource.Play();
+        animator.SetBool(AnimationStrings.isChargingPiercer, true);
     }
 
     private void DisableFiring()

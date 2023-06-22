@@ -42,7 +42,7 @@ public class HitscanBullet : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {

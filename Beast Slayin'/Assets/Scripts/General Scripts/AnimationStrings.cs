@@ -24,4 +24,5 @@ public class AnimationStrings : MonoBehaviour
     internal static string attackCooldown = "attackCooldown";
 
     internal static string bulletHitTrigger = "bulletHit";
+    internal static string isChargingPiercer = "piercerCharge";
 }
