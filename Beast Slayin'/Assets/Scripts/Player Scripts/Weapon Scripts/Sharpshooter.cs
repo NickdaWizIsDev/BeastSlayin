@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Piercer : MonoBehaviour
+public class Sharpshooter : MonoBehaviour
 {
     public Transform centerPoint; // Center point around which the gun rotates
     public Transform firePoint;

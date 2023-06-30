@@ -24,6 +24,7 @@ public class RayDamage : MonoBehaviour
     private float cooldownTimer;
     private bool rayActive;
     private bool ready = true;
+    private bool hitWeakpoint;
 
     private void Awake()
     {
@@ -77,6 +78,14 @@ public class RayDamage : MonoBehaviour
         if (rayActive)
         {
             UpdateRayDamage();
+            WeakpointDamage();
+
+            rayDamage = 1;
+
+            if (hitWeakpoint)
+            {
+                rayDamage *= 2;
+            }
         }
 
         if (cooldownTimer > 0f)
@@ -126,22 +135,58 @@ public class RayDamage : MonoBehaviour
     private void UpdateRayDamage()
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, lineRenderer.GetPosition(1) - firePoint.position, 100f);
+        bool hitEnemy = false;
+        int hitCount = 0;
 
-        for (int i = 0; i < Mathf.Min(3, hits.Length); i++)
+        foreach (RaycastHit2D hit in hits)
         {
-            RaycastHit2D hit = hits[i];
             Collider2D collider = hit.collider;
             Damageable damageable = collider.GetComponent<Damageable>();
+
             if (damageable != null)
             {
-                damageable.Hit(rayDamage);
-                lineRenderer.SetPosition(1, hit.point);
-                break;
+                if (!hitEnemy)
+                {
+                    damageable.Hit(rayDamage);
+                    lineRenderer.SetPosition(1, hit.point);
+                    hitEnemy = true;
+                    hitCount++;
+                }
+                else
+                {
+                    break; // Stop processing hits after the first enemy hit
+                }
             }
             else if (collider.gameObject.CompareTag("Ground"))
             {
                 lineRenderer.SetPosition(1, hit.point);
                 break;
+            }
+
+            if (hitCount >= 3)
+            {
+                break; // Stop processing hits after reaching the maximum hit count
+            }
+        }
+
+        if (!hitEnemy)
+        {
+            // If the ray didn't hit an enemy, extend the ray to its maximum length
+            lineRenderer.SetPosition(1, lineRenderer.GetPosition(0) + lineRenderer.GetPosition(1) - firePoint.position);
+        }
+    }
+
+    private void WeakpointDamage()
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, lineRenderer.GetPosition(1) - firePoint.position, 100f);
+        for (int i = 0; i < Mathf.Min(3, hits.Length); i++)
+        {
+            RaycastHit2D hit = hits[i];
+            Collider2D collider = hit.collider;
+
+            if (hit.collider.CompareTag("Weakpoint"))
+            {
+                hitWeakpoint = true;
             }
         }
     }

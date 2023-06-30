@@ -177,16 +177,16 @@ public class PlayerController : MonoBehaviour
 
     public void PlayWalkOne()
     {
-        audioSource.PlayOneShot(walk1);
+        audioSource.PlayOneShot(walk1, 0.45f);
     }
 
     public void PlayWalkTwo()
     {
-        audioSource.PlayOneShot(walk2);
+        audioSource.PlayOneShot(walk2, 0.45f);
     }
 
     public void Land()
     {
-        audioSource.PlayOneShot(land);
+        audioSource.PlayOneShot(land, 0.15f);
     }
 }

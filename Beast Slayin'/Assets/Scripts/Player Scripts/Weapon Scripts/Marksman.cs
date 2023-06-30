@@ -1,17 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Piercer : MonoBehaviour
+public class Marksman : MonoBehaviour
 {
     public Transform centerPoint; // Center point around which the gun rotates
     public Transform firePoint;
     public GameObject bulletPrefab;
+    public GameObject coinPrefab;
     public GameObject playerGameObject;
     public AudioClip gunshotClip;
     public float bulletForce = 100f;
     public float cooldownTime = 0.49f;
     public float rotationSpeed = 10f;
     public float distanceFromCenter = 1.5f; // Set the desired distance from the center point
+    public float coinForce = 5f;
 
     private Camera mainCamera;
     private AudioSource audioSource;
@@ -32,6 +34,11 @@ public class Piercer : MonoBehaviour
     private void Update()
     {
         mousePosition = Mouse.current.position.ReadValue();
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            ShootCoin();
+        }
     }
 
     public void OnFire(InputAction.CallbackContext context)
@@ -114,5 +121,24 @@ public class Piercer : MonoBehaviour
 
         // Destroy the bullet object after a certain time
         Destroy(bullet, 1f); // Change the time as per your requirements
+    }
+
+    private void ShootCoin()
+    {
+        GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        Rigidbody2D coinRb = coin.GetComponent<Rigidbody2D>();
+
+        Vector2 force = CalculateForce();
+        coinRb.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    private Vector2 CalculateForce()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mousePosition - (Vector2)transform.position;
+        direction.Normalize();
+
+        Vector2 force = direction * coinForce;
+        return force;
     }
 }

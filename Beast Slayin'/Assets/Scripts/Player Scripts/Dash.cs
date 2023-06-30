@@ -56,7 +56,7 @@ public class Dash : MonoBehaviour
     {
         IsDashing = true;
         dashStartTime = Time.time;
-        audioSource.PlayOneShot(dash);
+        audioSource.PlayOneShot(dash, 0.25f);
 
         float normalSpeed = controller.runSpeed;
         controller.runSpeed = dashSpeed;
