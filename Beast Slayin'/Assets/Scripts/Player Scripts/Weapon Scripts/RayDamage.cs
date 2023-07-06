@@ -139,35 +139,43 @@ public class RayDamage : MonoBehaviour
         RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, lineRenderer.GetPosition(1) - firePoint.position, 100f);
         bool hitEnemy = false;
 
-        int enemyHitCount = 0;
-
         foreach (RaycastHit2D hit in hits)
         {
             Collider2D collider = hit.collider;
+            Damageable damageable = collider.GetComponent<Damageable>();
 
-            if (collider.gameObject.CompareTag("Enemy"))
+            if (damageable != null)
             {
-                if (enemyHitCount < 3)
+                if (!hitEnemy)
                 {
-                    enemyHitCount++;
-                    if (collider.TryGetComponent(out Damageable damageable))
-                        damageable.Hit(rayDamage);
+                    damageable.Hit(rayDamage);
+                    lineRenderer.SetPosition(1, hit.point);
+                    hitEnemy = true;
+                    hitCount++;
+                }
+                else
+                {
+                    break; // Stop processing hits after the first enemy hit
                 }
             }
             else if (collider.gameObject.CompareTag("Weakpoint"))
             {
-                Damageable damageable = collider.GetComponentInParent<Damageable>();
+                damageable = collider.GetComponentInParent<Damageable>();
                 damageable.Hit(rayDamage * 2);
+                lineRenderer.SetPosition(1, hit.point);
+                hitEnemy = true;
+                hitCount++;
             }
-
-            lineRenderer.SetPosition(1, hit.point);
-
-            if (collider.gameObject.CompareTag("Ground") || enemyHitCount >= 3)
+            else if (collider.gameObject.CompareTag("Ground"))
             {
+                lineRenderer.SetPosition(1, hit.point);
                 break;
             }
+            if (hitCount >= 3)
+            {
+                break; // Stop processing hits after reaching the maximum hit count
+            }
         }
-
         if (!hitEnemy)
         {
             // If the ray didn't hit an enemy, extend the ray to its maximum length

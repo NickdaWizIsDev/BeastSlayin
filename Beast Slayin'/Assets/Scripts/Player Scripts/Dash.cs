@@ -44,6 +44,11 @@ public class Dash : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void Start()
+    {
+        dashCooldown = 0f;
+    }
+
     public void OnDash(InputAction.CallbackContext context)
     {
         if (context.started && !IsDashing && Time.time >= dashStartTime + dashCooldown)
