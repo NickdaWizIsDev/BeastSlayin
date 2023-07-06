@@ -117,6 +117,11 @@ public class PlayerController : MonoBehaviour
         {
             rb2d.gravityScale = 4f;
         }
+
+        if (touching.IsOnWall && rb2d.velocity.y < 0)
+        {
+            rb2d.gravityScale = 1f;
+        }
     }
 
     private void FixedUpdate()

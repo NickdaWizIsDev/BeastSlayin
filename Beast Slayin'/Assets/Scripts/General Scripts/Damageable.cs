@@ -6,8 +6,8 @@ using UnityEngine.Events;
 public class Damageable : MonoBehaviour
 {
     [SerializeField]
-    private int maxHealth = 100;
-    public int MaxHealth
+    private float maxHealth = 100f;
+    public float MaxHealth
     {
         get
         {
@@ -20,8 +20,8 @@ public class Damageable : MonoBehaviour
     }
 
     [SerializeField]
-    private int health = 100;
-    public int Health
+    private float health = 100f;
+    public float Health
     {
         get
         {
@@ -117,12 +117,14 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    public bool Hit(int damage)
+    public bool Hit(float damage)
     {
         if (IsAlive && !isInvincible)
         {
             Health -= damage;
             isInvincible = true;
+
+            Debug.Log("Dealt " + damage + " damage to " + gameObject.name);
 
             IsHit = true;
 

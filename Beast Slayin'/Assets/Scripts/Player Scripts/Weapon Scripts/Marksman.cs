@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Marksman : MonoBehaviour
 {
-    public Transform centerPoint; // Center point around which the gun rotates
+    public GameObject centerPoint; // Center point around which the gun rotates
     public Transform firePoint;
     public GameObject bulletPrefab;
     public GameObject coinPrefab;
@@ -13,7 +13,7 @@ public class Marksman : MonoBehaviour
     public float cooldownTime = 0.49f;
     public float rotationSpeed = 10f;
     public float distanceFromCenter = 1.5f; // Set the desired distance from the center point
-    public float coinForce = 5f;
+    public float coinForce = 15f;
 
     private Camera mainCamera;
     private AudioSource audioSource;
@@ -23,6 +23,8 @@ public class Marksman : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        centerPoint = GameObject.Find("centerPoint");
+        playerGameObject = GameObject.Find("Trinity");
     }
 
     private void Start()
@@ -74,11 +76,11 @@ public class Marksman : MonoBehaviour
         Vector3 worldMousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
 
         // Calculate the direction from the center point to the mouse position
-        Vector3 directionFromCenter = worldMousePosition - centerPoint.position;
+        Vector3 directionFromCenter = worldMousePosition - centerPoint.transform.position;
         directionFromCenter.z = 0f; // Set the z-component to 0 for 2D
 
         // Calculate the desired position based on the distance from the center point
-        Vector3 desiredPosition = centerPoint.position + directionFromCenter.normalized * distanceFromCenter;
+        Vector3 desiredPosition = centerPoint.transform.position + directionFromCenter.normalized * distanceFromCenter;
 
         // Set the position of the gun relative to the desired position
         transform.position = desiredPosition;
@@ -128,6 +130,9 @@ public class Marksman : MonoBehaviour
         GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
         Rigidbody2D coinRb = coin.GetComponent<Rigidbody2D>();
 
+        Rigidbody2D playerRb = playerGameObject.GetComponent<Rigidbody2D>();
+        coinRb.AddForce(playerRb.velocity, ForceMode2D.Impulse);
+
         Vector2 force = CalculateForce();
         coinRb.AddForce(force, ForceMode2D.Impulse);
     }
@@ -138,7 +143,22 @@ public class Marksman : MonoBehaviour
         Vector2 direction = mousePosition - (Vector2)transform.position;
         direction.Normalize();
 
-        Vector2 force = direction * coinForce;
+        // Calculate the angle between the direction and the X axis
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Define the minimum and maximum angles
+        float minAngle = 45f;
+        float maxAngle = 135f;
+
+        // Clamp the angle within the specified range
+        float clampedAngle = Mathf.Clamp(angle, minAngle, maxAngle);
+
+        // Calculate the new direction based on the clamped angle
+        Vector2 newDirection = Quaternion.Euler(0f, 0f, clampedAngle) * Vector2.right;
+
+        // Calculate the force using the new direction
+        Vector2 force = newDirection * coinForce;
         return force;
     }
+
 }

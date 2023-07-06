@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Piercer : MonoBehaviour
 {
-    public Transform centerPoint; // Center point around which the gun rotates
+    public GameObject centerPoint; // Center point around which the gun rotates
     public Transform firePoint;
     public GameObject bulletPrefab;
     public GameObject playerGameObject;
@@ -21,6 +21,8 @@ public class Piercer : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        centerPoint = GameObject.Find("centerPoint");
+        playerGameObject = GameObject.Find("Trinity");
     }
 
     private void Start()
@@ -67,11 +69,11 @@ public class Piercer : MonoBehaviour
         Vector3 worldMousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
 
         // Calculate the direction from the center point to the mouse position
-        Vector3 directionFromCenter = worldMousePosition - centerPoint.position;
+        Vector3 directionFromCenter = worldMousePosition - centerPoint.transform.position;
         directionFromCenter.z = 0f; // Set the z-component to 0 for 2D
 
         // Calculate the desired position based on the distance from the center point
-        Vector3 desiredPosition = centerPoint.position + directionFromCenter.normalized * distanceFromCenter;
+        Vector3 desiredPosition = centerPoint.transform.position + directionFromCenter.normalized * distanceFromCenter;
 
         // Set the position of the gun relative to the desired position
         transform.position = desiredPosition;

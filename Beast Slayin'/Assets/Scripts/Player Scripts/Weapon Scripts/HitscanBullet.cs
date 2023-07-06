@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class HitscanBullet : MonoBehaviour
 {
-    public int damage = 1;
+    public float damage = 1f;
+    public bool hitCoin;
 
+    public AudioClip ricoshot;
     private Animator animator;
     private Rigidbody2D rb;
     private AudioSource audioSource;
-    public AudioClip ricoshot;
 
     private void Awake()
     {
@@ -21,16 +22,28 @@ public class HitscanBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Weakpoint"))
         {
-            damage *= 3;
+            damage *= 2;
+            Damageable damageable = collision.GetComponentInParent<Damageable>();
+            damageable.Hit(damage);
+            Crash();
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
-            if (collision.TryGetComponent<Damageable>(out var damageable))
+            if (collision.TryGetComponent(out Damageable damageable))
             {
                 damageable.Hit(damage);
             }
 
             Crash();
+        }
+        else if (collision.gameObject.CompareTag("Coin") && !hitCoin)
+        {
+            Destroy(collision.gameObject);
+            FindAndShootToWeakpoint(velocityMagnitude: 1000f);
+            Debug.Log("Damage increased to " + damage);
+            audioSource.PlayOneShot(ricoshot, 0.2f);
+            hitCoin = true;
+            damage += 1;
         }
     }
 
@@ -39,12 +52,6 @@ public class HitscanBullet : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             Crash();
-        }
-        else if (collision.gameObject.CompareTag("Coin"))
-        {
-            FindAndShootToWeakpoint(velocityMagnitude: 1000f);
-            Destroy(collision.gameObject);
-            audioSource.PlayOneShot(ricoshot, 0.2f);
         }
     }
 
@@ -70,8 +77,6 @@ public class HitscanBullet : MonoBehaviour
     private void FindAndShootToWeakpoint(float velocityMagnitude)
     {
         GameObject[] weakpoints = GameObject.FindGameObjectsWithTag("Weakpoint");
-        damage += 1;
-
         if (weakpoints.Length > 0)
         {
             GameObject nearestWeakpoint = null;

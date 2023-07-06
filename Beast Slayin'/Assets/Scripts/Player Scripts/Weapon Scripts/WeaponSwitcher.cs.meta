@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9658ac64221c94849a95dca1873106f7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - piercerPrefab: {fileID: 3601618859737608758, guid: a3cd66b7d13f7894b801ddc0581bc464, type: 3}
+  - marksmanPrefab: {fileID: 3601618859737608758, guid: 974e2b08dbe2b7b4a8a2713c034dbd65, type: 3}
+  - sharpshooterPrefab: {fileID: 3601618859737608758, guid: 58275d9d11266f140ab7a84ced2656d1, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

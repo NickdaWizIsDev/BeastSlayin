@@ -10,11 +10,14 @@ public class RayDamage : MonoBehaviour
     public AudioClip rayClip;
     public AudioClip chargeUpClip;
 
-    public int rayDamage = 1;
+    public float rayDamage = 1f;
     public float chargeUpDuration = 1f;
     public float rayDuration = 0.75f;
     public float cooldownTime = 3f;
     public float raySpeed = 100f;
+
+
+    public int hitCount;
 
     private Camera mainCamera;
     private AudioSource audioSource;
@@ -78,7 +81,6 @@ public class RayDamage : MonoBehaviour
         if (rayActive)
         {
             UpdateRayDamage();
-            WeakpointDamage();
 
             rayDamage = 1;
 
@@ -136,36 +138,33 @@ public class RayDamage : MonoBehaviour
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, lineRenderer.GetPosition(1) - firePoint.position, 100f);
         bool hitEnemy = false;
-        int hitCount = 0;
+
+        int enemyHitCount = 0;
 
         foreach (RaycastHit2D hit in hits)
         {
             Collider2D collider = hit.collider;
-            Damageable damageable = collider.GetComponent<Damageable>();
 
-            if (damageable != null)
+            if (collider.gameObject.CompareTag("Enemy"))
             {
-                if (!hitEnemy)
+                if (enemyHitCount < 3)
                 {
-                    damageable.Hit(rayDamage);
-                    lineRenderer.SetPosition(1, hit.point);
-                    hitEnemy = true;
-                    hitCount++;
-                }
-                else
-                {
-                    break; // Stop processing hits after the first enemy hit
+                    enemyHitCount++;
+                    if (collider.TryGetComponent(out Damageable damageable))
+                        damageable.Hit(rayDamage);
                 }
             }
-            else if (collider.gameObject.CompareTag("Ground"))
+            else if (collider.gameObject.CompareTag("Weakpoint"))
             {
-                lineRenderer.SetPosition(1, hit.point);
+                Damageable damageable = collider.GetComponentInParent<Damageable>();
+                damageable.Hit(rayDamage * 2);
+            }
+
+            lineRenderer.SetPosition(1, hit.point);
+
+            if (collider.gameObject.CompareTag("Ground") || enemyHitCount >= 3)
+            {
                 break;
-            }
-
-            if (hitCount >= 3)
-            {
-                break; // Stop processing hits after reaching the maximum hit count
             }
         }
 
@@ -173,21 +172,6 @@ public class RayDamage : MonoBehaviour
         {
             // If the ray didn't hit an enemy, extend the ray to its maximum length
             lineRenderer.SetPosition(1, lineRenderer.GetPosition(0) + lineRenderer.GetPosition(1) - firePoint.position);
-        }
-    }
-
-    private void WeakpointDamage()
-    {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, lineRenderer.GetPosition(1) - firePoint.position, 100f);
-        for (int i = 0; i < Mathf.Min(3, hits.Length); i++)
-        {
-            RaycastHit2D hit = hits[i];
-            Collider2D collider = hit.collider;
-
-            if (hit.collider.CompareTag("Weakpoint"))
-            {
-                hitWeakpoint = true;
-            }
         }
     }
 }
