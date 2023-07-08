@@ -79,7 +79,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1764383291
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: ee91545f18cb453458af929233f4f019, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -111,7 +111,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!58 &4822567326798105997
 CircleCollider2D:
@@ -169,7 +169,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1764383291
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Time: 0.1
   m_Parameters:
@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  hitCoin: 0
   ricoshot: {fileID: 8300000, guid: 24bde4d9e62bf3b41bfe174e47d15d94, type: 3}
 --- !u!114 &295576556578662693
 MonoBehaviour:

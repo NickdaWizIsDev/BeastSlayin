@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 750295000351967432}
   - component: {fileID: 1509255141595036402}
   - component: {fileID: 4822567326798105997}
+  - component: {fileID: 237312974551176531}
   - component: {fileID: 6271266651139343236}
   - component: {fileID: 5739607515487233452}
-  - component: {fileID: 237312974551176531}
   m_Layer: 9
   m_Name: SharpshooterBullet
   m_TagString: Bullet
@@ -127,6 +127,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
+--- !u!114 &237312974551176531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750295000351967435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbf215dbae285e545bfce93e23e15c5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  hitCoin: 0
+  ricoshot: {fileID: 8300000, guid: 24bde4d9e62bf3b41bfe174e47d15d94, type: 3}
+  maxBounces: 1
 --- !u!96 &6271266651139343236
 TrailRenderer:
   serializedVersion: 2
@@ -331,22 +347,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &237312974551176531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750295000351967435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbf215dbae285e545bfce93e23e15c5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  hitCoin: 0
-  ricoshot: {fileID: 8300000, guid: 24bde4d9e62bf3b41bfe174e47d15d94, type: 3}
-  maxBounces: 1
 --- !u!1 &4622636835510888244
 GameObject:
   m_ObjectHideFlags: 0

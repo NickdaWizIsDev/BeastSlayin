@@ -130,6 +130,14 @@ public class Damageable : MonoBehaviour
 
             return true;
         }
+        else if(IsAlive && iFrames == 0)
+        {
+            Health -= damage;
+
+            Debug.Log("Dealt " + damage + " damage to " + gameObject.name);
+
+            return true;
+        }
         else
         {
             return false;
