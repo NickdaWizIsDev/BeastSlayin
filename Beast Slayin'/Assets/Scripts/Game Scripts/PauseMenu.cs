@@ -3,7 +3,9 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     public Canvas pauseCanvas;
+    public Canvas options;
     public GameObject continueButton;
+    public GameObject optionsButton;
     public GameObject mainMenuButton;
 
     private bool isPaused = false;
@@ -43,6 +45,12 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         pauseCanvas.gameObject.SetActive(false);
         isPaused = false;
+    }
+
+    public void Options()
+    {
+        pauseCanvas.gameObject.SetActive(false);
+        options.gameObject.SetActive(true);
     }
 
     public void MainMenu()

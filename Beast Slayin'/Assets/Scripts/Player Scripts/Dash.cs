@@ -29,7 +29,7 @@ public class Dash : MonoBehaviour
     public float dashDistance = 3f;
     public float dashDuration = 0.25f;
     public float dashSpeed = 35f;
-    public float dashCooldown = 1f;
+    public float dashCooldown = 1.5f;
     private float dashStartTime;
 
     public AudioSource audioSource;

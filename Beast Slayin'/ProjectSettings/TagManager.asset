@@ -13,6 +13,7 @@ TagManager:
   - Gun
   - Pellet
   - EnemyAttacks
+  - MusicPlayer
   layers:
   - Default
   - TransparentFX

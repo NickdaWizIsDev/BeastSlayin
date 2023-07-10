@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public Canvas gameOver;
+    public AudioSource music;
     private Rigidbody2D rb2d;
     private TouchingDirections touching;
     private Animator animator;
@@ -120,6 +121,21 @@ public class PlayerController : MonoBehaviour
         if (touching.IsOnWall && rb2d.velocity.y < 0)
         {
             rb2d.gravityScale = 1f;
+        }
+
+        if (!damageable.IsAlive)
+        {
+            Time.timeScale = 0f;
+            gameOver.gameObject.SetActive(true);
+            music.Stop();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("MusicPlayer"))
+        {
+            music.PlayDelayed(0.5f);
         }
     }
 

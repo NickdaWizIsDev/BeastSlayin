@@ -52,7 +52,7 @@ public class Damageable : MonoBehaviour
             animator.SetBool(AnimationStrings.isAlive, value);
             Debug.Log("IsAlive was set to " + value);
 
-            if (!isAlive)
+            if (!isAlive && !gameObject.CompareTag("Player"))
             {
                 // Play death audio clip
                 if (deathAudioSource == null)
