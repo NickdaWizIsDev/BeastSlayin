@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 4627736533283752237}
   - component: {fileID: 4627736533283752236}
   - component: {fileID: 4627736533283752227}
+  - component: {fileID: 6214132404116218181}
   m_Layer: 3
   m_Name: Trinity
   m_TagString: Player
@@ -186,7 +187,7 @@ MonoBehaviour:
   isAlive: 1
   audioSource: {fileID: 4627736533283752227}
   deathAudioSource: {fileID: 0}
-  dmgClip: {fileID: 0}
+  dmgClip: {fileID: 8300000, guid: 62f3338b77a1aae47abfe9e50be98f99, type: 3}
   deathClip: {fileID: 0}
   isInvincible: 0
   iFrames: 1.25
@@ -462,6 +463,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6214132404116218181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4627736533283752226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a762827e80402489925b2a62638b40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthDisplay: {fileID: 0}
+  Trinity: {fileID: 0}
 --- !u!1 &4627736533744457439
 GameObject:
   m_ObjectHideFlags: 0

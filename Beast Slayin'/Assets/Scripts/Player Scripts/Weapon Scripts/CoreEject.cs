@@ -15,7 +15,7 @@ public class CoreEject : MonoBehaviour
     public float distanceFromCenter = 1.88f;
     private float cdTime = 1.25f;
     private float altTime = 2.3f;
-    private float pelletForce = 100f;
+    private float pelletForce = 50f;
 
     public GameObject centerPoint;
     public Transform firePoint;
@@ -147,7 +147,7 @@ public class CoreEject : MonoBehaviour
         }
 
         // Play audio clip
-        audioSource.PlayOneShot(shotgunClip);
+        audioSource.PlayOneShot(shotgunClip, 0.3f);
 
         isFiring = false;
 

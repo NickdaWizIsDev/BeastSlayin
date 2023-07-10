@@ -7,6 +7,11 @@ MonoImporter:
   - piercerPrefab: {fileID: 3601618859737608758, guid: a3cd66b7d13f7894b801ddc0581bc464, type: 3}
   - marksmanPrefab: {fileID: 3601618859737608758, guid: 974e2b08dbe2b7b4a8a2713c034dbd65, type: 3}
   - sharpshooterPrefab: {fileID: 3601618859737608758, guid: 58275d9d11266f140ab7a84ced2656d1, type: 3}
+  - coreEjectPrefab: {fileID: 363252153111886296, guid: 469130bbe452e9d4c92647ad96768495, type: 3}
+  - pumpChargePrefab: {fileID: 4677062569365852509, guid: 99fef47c9c5f2a849aacd8a4093f140e, type: 3}
+  - magneticPrefab: {instanceID: 0}
+  - overheatPrefab: {instanceID: 0}
+  - elecCannon: {fileID: 816093317585420771, guid: 5a4330f45582e1444aecef86d6b31d53, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

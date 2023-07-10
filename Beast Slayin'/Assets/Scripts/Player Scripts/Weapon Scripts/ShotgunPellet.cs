@@ -20,7 +20,7 @@ public class ShotgunPellet : MonoBehaviour
             {
                 damageable.Hit(damage);
             }
-            Invoke(nameof(Die), 0.2f);
+            Invoke(nameof(Die), 0.1f);
         }
     }
 

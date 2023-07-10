@@ -107,7 +107,7 @@ public class Piercer : MonoBehaviour
 
     private void Shoot()
     {
-        Vector3 direction = (mousePosition - (Vector2)mainCamera.WorldToScreenPoint(firePoint.position)).normalized;
+        Vector3 direction = (mousePosition - (Vector2)mainCamera.WorldToScreenPoint(centerPoint.transform.position)).normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();

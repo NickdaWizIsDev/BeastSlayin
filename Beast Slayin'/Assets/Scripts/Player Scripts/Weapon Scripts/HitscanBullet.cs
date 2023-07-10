@@ -22,28 +22,27 @@ public class HitscanBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Weakpoint"))
         {
+            Crash();
             damage *= 2;
             Damageable damageable = collision.GetComponentInParent<Damageable>();
             damageable.Hit(damage);
-            Crash();
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
+            Crash();
             if (collision.TryGetComponent(out Damageable damageable))
             {
                 damageable.Hit(damage);
             }
-
-            Crash();
         }
         else if (collision.gameObject.CompareTag("Coin") && !hitCoin)
         {
             Destroy(collision.gameObject);
             FindAndShootToWeakpoint(velocityMagnitude: 1000f);
+            damage += 1;
             Debug.Log("Damage increased to " + damage);
             audioSource.PlayOneShot(ricoshot, 0.2f);
             hitCoin = true;
-            damage += 1;
         }
     }
 

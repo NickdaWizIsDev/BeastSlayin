@@ -1,9 +1,9 @@
-using System.Net;
 using UnityEngine;
 
 public class RayDamage : MonoBehaviour
 {
     public Transform firePoint;
+    public GameObject centerPoint;
     public LineRenderer lineRenderer;
     public AudioClip rechargeClip;
     public AudioClip readyClip;
@@ -19,6 +19,7 @@ public class RayDamage : MonoBehaviour
 
     public int hitCount;
 
+    private Vector3 rayDirection;
     private Camera mainCamera;
     private AudioSource audioSource;
     private Animator animator;
@@ -33,6 +34,7 @@ public class RayDamage : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
+        centerPoint = GameObject.Find("centerPoint");
     }
 
     private void Start()
@@ -81,13 +83,6 @@ public class RayDamage : MonoBehaviour
         if (rayActive)
         {
             UpdateRayDamage();
-
-            rayDamage = 1;
-
-            if (hitWeakpoint)
-            {
-                rayDamage *= 2;
-            }
         }
 
         if (cooldownTimer > 0f)
@@ -99,10 +94,14 @@ public class RayDamage : MonoBehaviour
                 cooldownTimer = 0f;
                 audioSource.Stop();
                 audioSource.PlayOneShot(readyClip);
+                hitCount = 0;
                 ready = true;
                 // TODO: Update cooldown UI or perform any cooldown visualizations
             }
         }
+
+        rayDirection = (Input.mousePosition - mainCamera.WorldToScreenPoint(centerPoint.transform.position)).normalized;
+        rayDirection.Normalize();
     }
 
     private void Charge()
@@ -122,16 +121,50 @@ public class RayDamage : MonoBehaviour
 
     private void FireRay()
     {
-        Vector3 direction = (Input.mousePosition - mainCamera.WorldToScreenPoint(firePoint.position)).normalized;
-        Vector3 endPoint = firePoint.position + direction * 100f;
+        rayActive = true;
+        lineRenderer.enabled = true;
+
+        audioSource.PlayOneShot(rayClip);
+
+        Vector3 endPoint = firePoint.position + rayDirection * 100f;
 
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, firePoint.position);
         lineRenderer.SetPosition(1, endPoint);
+        
+        RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, lineRenderer.GetPosition(1) - firePoint.position, 100f);
+        bool hitEnemy = false;
 
-        rayActive = true;
-        lineRenderer.enabled = true;
-        audioSource.PlayOneShot(rayClip);
+        foreach (RaycastHit2D hit in hits)
+        {
+            Collider2D collider = hit.collider;
+
+            if (!hitEnemy)
+            {
+                // If the ray didn't hit an enemy, extend the ray to its maximum length
+                lineRenderer.SetPosition(1, lineRenderer.GetPosition(0) + lineRenderer.GetPosition(1) - firePoint.position);
+            }
+            if (hitCount >= 3)
+            {
+                break; // Stop processing hits after reaching the maximum hit count
+            }
+
+            if (collider.gameObject.CompareTag("Enemy"))
+            {
+                lineRenderer.SetPosition(1, hit.point);
+                hitEnemy = true;
+            }
+            else if (collider.gameObject.CompareTag("Weakpoint"))
+            {
+                lineRenderer.SetPosition(1, hit.point);
+                hitEnemy = true;
+            }
+            else if (collider.gameObject.CompareTag("Ground"))
+            {
+                lineRenderer.SetPosition(1, hit.point);
+                break;
+            }
+        }        
     }
 
     private void UpdateRayDamage()
@@ -144,12 +177,15 @@ public class RayDamage : MonoBehaviour
             Collider2D collider = hit.collider;
             Damageable damageable = collider.GetComponent<Damageable>();
 
+            if (hitCount >= 3)
+            {
+                break; // Stop processing hits after reaching the maximum hit count
+            }
             if (damageable != null)
             {
                 if (!hitEnemy)
                 {
                     damageable.Hit(rayDamage);
-                    lineRenderer.SetPosition(1, hit.point);
                     hitEnemy = true;
                     hitCount++;
                 }
@@ -160,26 +196,18 @@ public class RayDamage : MonoBehaviour
             }
             else if (collider.gameObject.CompareTag("Weakpoint"))
             {
-                damageable = collider.GetComponentInParent<Damageable>();
-                damageable.Hit(rayDamage * 2);
-                lineRenderer.SetPosition(1, hit.point);
-                hitEnemy = true;
-                hitCount++;
+                if (!hitEnemy)
+                {
+                    damageable = collider.GetComponentInParent<Damageable>();
+                    damageable.Hit(rayDamage * 2);
+                    hitEnemy = true;
+                    hitCount++;
+                }
+                else
+                {
+                    break;
+                }
             }
-            else if (collider.gameObject.CompareTag("Ground"))
-            {
-                lineRenderer.SetPosition(1, hit.point);
-                break;
-            }
-            if (hitCount >= 3)
-            {
-                break; // Stop processing hits after reaching the maximum hit count
-            }
-        }
-        if (!hitEnemy)
-        {
-            // If the ray didn't hit an enemy, extend the ray to its maximum length
-            lineRenderer.SetPosition(1, lineRenderer.GetPosition(0) + lineRenderer.GetPosition(1) - firePoint.position);
         }
     }
 }

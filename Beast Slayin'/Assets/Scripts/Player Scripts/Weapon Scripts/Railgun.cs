@@ -120,7 +120,7 @@ public class Railgun : MonoBehaviour
 
         audioSource.PlayOneShot(railgunClip, 0.3f);
 
-        Vector3 direction = (Input.mousePosition - mainCamera.WorldToScreenPoint(firePoint.position)).normalized;
+        Vector3 direction = (Input.mousePosition - mainCamera.WorldToScreenPoint(centerPoint.transform.position)).normalized;
         direction.Normalize();
         Vector2 endPoint = firePoint.position + direction * 1000f;
 

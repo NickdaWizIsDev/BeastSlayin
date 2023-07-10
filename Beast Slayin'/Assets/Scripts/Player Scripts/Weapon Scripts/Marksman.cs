@@ -9,11 +9,15 @@ public class Marksman : MonoBehaviour
     public GameObject coinPrefab;
     public GameObject playerGameObject;
     public AudioClip gunshotClip;
+    public AudioClip coinClip;
     public float bulletForce = 100f;
     public float cooldownTime = 0.49f;
     public float rotationSpeed = 10f;
     public float distanceFromCenter = 1.5f; // Set the desired distance from the center point
     public float coinForce = 15f;
+    public float coinCD = 4f;
+    public float coinTimer;
+    public int coins;
 
     private Camera mainCamera;
     private AudioSource audioSource;
@@ -31,15 +35,26 @@ public class Marksman : MonoBehaviour
     {
         mainCamera = Camera.main;
         shootTimer = cooldownTime;
+        coins = 4;
     }
 
     private void Update()
     {
         mousePosition = Mouse.current.position.ReadValue();
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && coins > 0)
         {
             ShootCoin();
+        }
+
+        if (coins < 4)
+        {
+            coinTimer += Time.deltaTime;
+        }
+        if (coinTimer >= coinCD && coins < 4)
+        {
+            coins++;
+            coinTimer = 0f;
         }
     }
 
@@ -114,7 +129,7 @@ public class Marksman : MonoBehaviour
 
     private void Shoot()
     {
-        Vector3 direction = (mousePosition - (Vector2)mainCamera.WorldToScreenPoint(firePoint.position)).normalized;
+        Vector3 direction = (mousePosition - (Vector2)mainCamera.WorldToScreenPoint(centerPoint.transform.position)).normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
@@ -127,11 +142,13 @@ public class Marksman : MonoBehaviour
 
     private void ShootCoin()
     {
-        GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        GameObject coin = Instantiate(coinPrefab, centerPoint.transform.position, Quaternion.identity);
         Rigidbody2D coinRb = coin.GetComponent<Rigidbody2D>();
 
         Rigidbody2D playerRb = playerGameObject.GetComponent<Rigidbody2D>();
         coinRb.AddForce(playerRb.velocity, ForceMode2D.Impulse);
+        audioSource.PlayOneShot(coinClip, 0.35f);
+        coins--;
 
         Vector2 force = CalculateForce();
         coinRb.AddForce(force, ForceMode2D.Impulse);

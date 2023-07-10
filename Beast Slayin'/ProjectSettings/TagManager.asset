@@ -10,6 +10,9 @@ TagManager:
   - Enemy
   - Weakpoint
   - Coin
+  - Gun
+  - Pellet
+  - EnemyAttacks
   layers:
   - Default
   - TransparentFX

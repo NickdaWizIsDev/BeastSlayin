@@ -73,7 +73,6 @@ public class PlayerController : MonoBehaviour
     private readonly float fallGravityScale = 7f;
 
     private bool isFacingRight = true;
-    [SerializeField]
     public bool IsFacingRight
     {
         get
@@ -126,8 +125,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!damageable.IsHit)
-            rb2d.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb2d.velocity.y);
+        rb2d.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb2d.velocity.y);
+
+        if (damageable.IsHit)
+        {
+            animator.SetTrigger(AnimationStrings.isHit);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)

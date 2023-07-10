@@ -57,13 +57,12 @@ public class Damageable : MonoBehaviour
                 // Play death audio clip
                 if (deathAudioSource == null)
                 {
-                    deathAudioSource = gameObject.AddComponent<AudioSource>();
-                }
+                    GameObject audioObject = new("Death Audio");
 
-                if (deathClip != null)
-                {
-                    deathAudioSource.clip = deathClip;
-                    deathAudioSource.Play();
+                    AudioSource audioSource = audioObject.AddComponent<AudioSource>();
+
+                    audioSource.PlayOneShot(deathClip, 0.3f);
+                    Destroy(audioObject, 0.4f);
                 }
                 Destroy(gameObject);
             }
@@ -89,8 +88,7 @@ public class Damageable : MonoBehaviour
             // Play hit audio clip
             if (audioSource != null && dmgClip != null)
             {
-                audioSource.clip = dmgClip;
-                audioSource.Play();
+                audioSource.PlayOneShot(dmgClip, 0.5f);
             }
         }
     }
@@ -101,6 +99,11 @@ public class Damageable : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        Health = maxHealth;
     }
 
     private void Update()
