@@ -9,6 +9,7 @@ public class Menu : MonoBehaviour
     public Button quit;
     public GameObject mainMenu;
     public GameObject levelList;
+    public GameObject optionsMenu;
 
     private void Start()
     {
@@ -20,6 +21,12 @@ public class Menu : MonoBehaviour
     {
         mainMenu.SetActive(false);
         levelList.SetActive(true);
+    }
+
+    public void Options()
+    {
+        mainMenu.SetActive(false);
+        optionsMenu.SetActive(true);
     }
 
     public void Quit()

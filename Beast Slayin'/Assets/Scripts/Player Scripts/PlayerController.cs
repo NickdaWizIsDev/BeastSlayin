@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            if (CanMove || !touching.IsOnWall)
+            if (CanMove && !touching.IsOnWall)
             {
                 if (IsMoving)
                 {
