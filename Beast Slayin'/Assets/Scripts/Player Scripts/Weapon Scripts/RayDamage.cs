@@ -164,13 +164,16 @@ public class RayDamage : MonoBehaviour
                 lineRenderer.SetPosition(1, hit.point);
                 break;
             }
+            else
+            {
+                hitEnemy = false;
+            }
         }        
     }
 
     private void UpdateRayDamage()
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, lineRenderer.GetPosition(1) - firePoint.position, 100f);
-        bool hitEnemy = false;
 
         foreach (RaycastHit2D hit in hits)
         {
@@ -183,10 +186,9 @@ public class RayDamage : MonoBehaviour
             }
             if (damageable != null)
             {
-                if (!hitEnemy)
+                if (hitCount < 3)
                 {
                     damageable.Hit(rayDamage);
-                    hitEnemy = true;
                     hitCount++;
                 }
                 else
@@ -196,11 +198,10 @@ public class RayDamage : MonoBehaviour
             }
             else if (collider.gameObject.CompareTag("Weakpoint"))
             {
-                if (!hitEnemy)
+                if (hitCount < 3)
                 {
                     damageable = collider.GetComponentInParent<Damageable>();
                     damageable.Hit(rayDamage * 2);
-                    hitEnemy = true;
                     hitCount++;
                 }
                 else

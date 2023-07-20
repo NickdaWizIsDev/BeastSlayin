@@ -5,6 +5,7 @@ public class HitscanBullet : MonoBehaviour
 {
     public float damage = 1f;
     public bool hitCoin;
+    public bool hitWeakpoint = false;
 
     public AudioClip ricoshot;
     private Animator animator;
@@ -22,6 +23,7 @@ public class HitscanBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Weakpoint"))
         {
+            hitWeakpoint = true;
             Crash();
             damage *= 2;
             Damageable damageable = collision.GetComponentInParent<Damageable>();
@@ -37,12 +39,12 @@ public class HitscanBullet : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Coin") && !hitCoin)
         {
+            hitCoin = true;
             Destroy(collision.gameObject);
             FindAndShootToWeakpoint(velocityMagnitude: 1000f);
             damage += 1;
             Debug.Log("Damage increased to " + damage);
             audioSource.PlayOneShot(ricoshot, 0.2f);
-            hitCoin = true;
         }
     }
 

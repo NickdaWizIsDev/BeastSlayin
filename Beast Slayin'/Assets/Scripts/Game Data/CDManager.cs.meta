@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: db43ecef59bf7a0419521943be9d2afe
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - railgunCD: {fileID: 11400000, guid: 7060285b3971fd145811c66d4d343534, type: 2}
+  - railgunReady: {fileID: 8300000, guid: 51aa00a7ead053d40b2a19618497b1c9, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

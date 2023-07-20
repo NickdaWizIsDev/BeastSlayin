@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,6 @@ public class Railgun : MonoBehaviour
     public bool isFiring;
 
     public float damage = 8f;
-    public float cdTimer;
     public float rotationSpeed = 10f;
     public float distanceFromCenter = 2.22f;
     private float cdTime = 16f;
@@ -19,12 +19,14 @@ public class Railgun : MonoBehaviour
     public GameObject centerPoint;
     public Transform firePoint;
     public GameObject playerGameObject;
-    public AudioClip railgunClip;
+    public AudioClip fireClip;
+    public AudioClip chargedClip;
+    public FloatVariable cd;
     private Camera mainCamera;
     private AudioSource audioSource;
     private Vector2 mousePosition;
 
-    Animator animator;
+    private Animator animator;
 
     private void Awake()
     {
@@ -36,26 +38,38 @@ public class Railgun : MonoBehaviour
 
     void Start()
     {
-        mainCamera = Camera.main;
-        cdTimer = cdTime;
+        mainCamera = Camera.main;        
     }
 
     void Update()
     {
         mousePosition = Mouse.current.position.ReadValue();
+        if (cd.value >= cdTime)
+        {
+            charged = true;
+            animator.SetBool(AnimationStrings.charged, true);
+            isCharging = false;
+        }
 
-
+        else if (cd.value < cdTime)
+        {
+            isCharging = true;
+            animator.SetBool(AnimationStrings.charged, false);
+        }    
     }
+
+    public void PlayChargedClip()
+    {
+        audioSource.clip = chargedClip;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
     private void FixedUpdate()
     {
         RotateTowardsMouse();
-        if (cdTimer < cdTime)
-        {
-            cdTimer += Time.deltaTime;
-        }
 
-        if (cdTimer >= cdTime)
-            charged = true;
+        
     }
 
     public void OnFire(InputAction.CallbackContext context)
@@ -66,7 +80,7 @@ public class Railgun : MonoBehaviour
             {
                 StartCoroutine(Shoot());
                 charged = false;
-                cdTimer = 0f;
+                cd.value = 0f;
 
             }
         }
@@ -118,7 +132,8 @@ public class Railgun : MonoBehaviour
         lineRenderer.enabled = true;
         isFiring = true;
 
-        audioSource.PlayOneShot(railgunClip, 0.3f);
+        audioSource.Stop();
+        audioSource.PlayOneShot(fireClip, 0.3f);
 
         Vector3 direction = (Input.mousePosition - mainCamera.WorldToScreenPoint(centerPoint.transform.position)).normalized;
         direction.Normalize();

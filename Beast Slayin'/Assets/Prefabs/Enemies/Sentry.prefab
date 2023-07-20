@@ -293,7 +293,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!114 &6649754452344579597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,10 +306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f69ca7244dcdc41827b6dff14b2061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 10
+  detectionRange: 20
   damageAmount: 10
   lineWidth: 0.1
-  lineMaxLength: 10
+  lineMaxLength: 20
   aimColor: {r: 1, g: 0, b: 1, a: 1}
   chargeColor: {r: 1, g: 0, b: 0, a: 1}
   projectile: {fileID: 750295000351967435, guid: 35ae470f7d0cdba4ea5096c0f783d1b5, type: 3}

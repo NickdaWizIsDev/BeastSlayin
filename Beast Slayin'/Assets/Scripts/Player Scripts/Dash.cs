@@ -30,7 +30,9 @@ public class Dash : MonoBehaviour
     public float dashDuration = 0.25f;
     public float dashSpeed = 35f;
     public float dashCooldown = 1.5f;
+    public int dashCharges = 3;
     private float dashStartTime;
+    private float dashTimer;
 
     public AudioSource audioSource;
     public AudioClip dash;
@@ -44,6 +46,20 @@ public class Dash : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        if(dashCharges < 3)
+        {
+            dashTimer += Time.deltaTime;
+        }
+
+        if(dashTimer >= 3f)
+        {
+            dashCharges++;
+            dashTimer = 0f;
+        }
+    }
+
     private void Start()
     {
         dashCooldown = 0f;
@@ -51,9 +67,10 @@ public class Dash : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.started && !IsDashing && Time.time >= dashStartTime + dashCooldown)
+        if (context.started && !IsDashing && Time.time >= dashStartTime + dashCooldown && dashCharges > 0)
         {
             StartCoroutine(UltraDash(transform.localScale.x));
+            dashCharges--;
         }
     }
 

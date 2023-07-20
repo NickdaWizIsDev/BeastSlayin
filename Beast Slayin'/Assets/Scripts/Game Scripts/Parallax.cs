@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Parallax : MonoBehaviour
 {
-    private float length;
+    [SerializeField] private float length;
     private float startPos;
     [SerializeField] private float parallaxEffect;
     private GameObject cam;

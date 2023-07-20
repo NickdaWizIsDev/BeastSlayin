@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            if (CanMove && !touching.IsOnWall)
+            if (CanMove || !touching.IsOnWall)
             {
                 if (IsMoving)
                 {
@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("MusicPlayer"))
         {
             music.PlayDelayed(0.5f);
+            Destroy(collision.gameObject);
         }
     }
 

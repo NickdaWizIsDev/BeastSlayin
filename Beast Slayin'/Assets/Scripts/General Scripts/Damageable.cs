@@ -64,7 +64,7 @@ public class Damageable : MonoBehaviour
                     audioSource.PlayOneShot(deathClip, 0.3f);
                     Destroy(audioObject, 0.4f);
                 }
-                Destroy(gameObject);
+                Destroy(gameObject, 0.5f);
             }
         }
     }
@@ -86,7 +86,7 @@ public class Damageable : MonoBehaviour
             animator.SetBool(AnimationStrings.isHit, value);
 
             // Play hit audio clip
-            if (audioSource != null && dmgClip != null)
+            if (audioSource != null && dmgClip != null && IsHit)
             {
                 audioSource.PlayOneShot(dmgClip, 0.5f);
             }

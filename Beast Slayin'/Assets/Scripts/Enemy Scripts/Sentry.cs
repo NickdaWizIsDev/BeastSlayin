@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sentry : MonoBehaviour
 {
-    public float detectionRange = 10f;
+    public float detectionRange = 50f;
     public float damageAmount = 10f;
     public float lineWidth = 0.1f;
     public float lineMaxLength = 20f;
@@ -16,6 +16,7 @@ public class Sentry : MonoBehaviour
     private Transform playerTransform;
     private LineRenderer lineRenderer;
     private Animator animator;
+    private Damageable damageable;
     private bool isAiming = false;
 
     public bool HasTarget { get { return isAiming; } private set { isAiming = value; animator.SetBool(AnimationStrings.hasTarget, value); } }
@@ -24,6 +25,7 @@ public class Sentry : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         lineRenderer = GetComponent<LineRenderer>();
+        damageable = GetComponent<Damageable>();
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = 0;
@@ -67,7 +69,8 @@ public class Sentry : MonoBehaviour
     public IEnumerator Fire()
     {
         Color tempAim = aimColor;
-        aimColor = chargeColor; 
+        aimColor = chargeColor;
+        lineRenderer.startColor = chargeColor;
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, firePoint.position);
         lineRenderer.SetPosition(1, playerTransform.position.normalized);

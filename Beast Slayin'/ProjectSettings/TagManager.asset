@@ -29,7 +29,7 @@ TagManager:
   - GroundHits
   - Coin
   - Hehe
-  - 
+  - Wanderer
   - 
   - 
   - 
@@ -54,11 +54,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Deco
-    uniqueID: 1119855487
-    locked: 0
   - name: Tilemap
     uniqueID: 940221577
+    locked: 0
+  - name: Deco
+    uniqueID: 1119855487
     locked: 0
   - name: Enemies
     uniqueID: 3707690883

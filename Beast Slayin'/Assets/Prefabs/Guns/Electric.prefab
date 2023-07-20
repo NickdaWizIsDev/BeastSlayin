@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9036399871531182061}
   - component: {fileID: 1300102902648303294}
   - component: {fileID: 6660184137583188594}
+  - component: {fileID: 2392662617974640278}
   m_Layer: 0
   m_Name: Electric
   m_TagString: Gun
@@ -106,13 +107,14 @@ MonoBehaviour:
   charged: 0
   isFiring: 0
   damage: 8
-  cdTimer: 0
   rotationSpeed: 10
   distanceFromCenter: 2.22
   centerPoint: {fileID: 0}
   firePoint: {fileID: 7798311850330453923}
   playerGameObject: {fileID: 0}
-  railgunClip: {fileID: 8300000, guid: ffe86e9da6e1ee94f8b64fcd72f0802a, type: 3}
+  fireClip: {fileID: 8300000, guid: ffe86e9da6e1ee94f8b64fcd72f0802a, type: 3}
+  chargedClip: {fileID: 8300000, guid: 51aa00a7ead053d40b2a19618497b1c9, type: 3}
+  cd: {fileID: 11400000, guid: 7060285b3971fd145811c66d4d343534, type: 2}
 --- !u!82 &9036399871531182061
 AudioSource:
   m_ObjectHideFlags: 0
@@ -123,11 +125,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_audioClip: {fileID: 8300000, guid: 51aa00a7ead053d40b2a19618497b1c9, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.2
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -410,6 +412,26 @@ LineRenderer:
     generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!95 &2392662617974640278
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816093317585420771}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 66a7ec8c7510ce2428fa141f1063b24b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &3512910220488443016
 GameObject:
   m_ObjectHideFlags: 0

@@ -247,6 +247,7 @@ MonoBehaviour:
   dashDuration: 0.25
   dashSpeed: 35
   dashCooldown: 1.5
+  dashCharges: 3
   audioSource: {fileID: 4627736533283752227}
   dash: {fileID: 8300000, guid: f76602b39dd554147901c8c0f69e2064, type: 3}
 --- !u!114 &4627736533283752239
@@ -555,7 +556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthDisplay: {fileID: 0}
-  Trinity: {fileID: 0}
+  Trinity: {fileID: 4627736533283752226}
 --- !u!1 &4627736533744457439
 GameObject:
   m_ObjectHideFlags: 0

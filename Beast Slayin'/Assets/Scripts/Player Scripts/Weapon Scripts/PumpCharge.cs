@@ -55,22 +55,22 @@ public class PumpCharge : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1) && canPump)
         {
-            charges++;
             if (charges == 1)
             {
                 audioSource.pitch = 1f;
-                audioSource.PlayOneShot(chargeClip, 0.2f);
+                audioSource.PlayOneShot(chargeClip, 0.4f);
             }
             else if (charges == 2)
             {
                 audioSource.pitch = 1.25f;
-                audioSource.PlayOneShot(chargeClip, 0.2f);
+                audioSource.PlayOneShot(chargeClip, 0.4f);
             }
             else if (charges >= 3)
             {
                 audioSource.pitch = 1.75f;
-                audioSource.PlayOneShot(chargeClip, 0.2f);
+                audioSource.PlayOneShot(chargeClip, 0.4f);
             }
+            charges++;
 
             canPump = false;
             altTimer = 0f;
